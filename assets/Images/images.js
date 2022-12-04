@@ -1,5 +1,5 @@
 const images = {
-  spotify: require('../spotify-logo.png'),
+  telephone: require('../telephone-logo.png'),
 };
 
 export default images;

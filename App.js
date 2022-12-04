@@ -14,11 +14,13 @@ import { useState } from "react";
 import { ScreenStack } from "react-native-screens";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
-import { SongPreview } from "./components/songpreview";
-import { SongDetails } from "./components/songscreen";
+import { RoomCode } from "./components/entercode";
+import { HostName } from "./components/hostname";
+import { GuestList } from "./components/guestlistscreen";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
+
 
 const Stack = createStackNavigator();
 
@@ -31,8 +33,32 @@ export default function App() {
           component={HomeScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Preview" component={SongPreview} />
-        <Stack.Screen name="Song" component={SongDetails} />
+        <Stack.Screen 
+          name="Host name" 
+          component={HostName} 
+          options={{
+            headerStyle: {
+              backgroundColor: Themes.colors.white,
+            },
+          headerTintColor: 'gray',
+          }}
+        />
+        <Stack.Screen 
+          name="Guest room" 
+          component={RoomCode} 
+          options={{
+            headerStyle: {
+              backgroundColor: Themes.colors.white,
+            },
+          headerTintColor: 'gray',
+          }}
+        />
+        <Stack.Screen 
+          name="Guest list" 
+          component={GuestList} 
+          options={{ headerShown: false }}
+        />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -40,7 +66,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Themes.colors.background,
+    backgroundColor: Themes.colors.white,
     justifyContent: "center",
     alignItems: "center",
     flex: 1,

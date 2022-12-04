@@ -10,74 +10,83 @@ import {
 } from "react-native";
 import Constants from "expo-constants";
 import { useState } from "react";
-import { useSpotifyAuth } from "../utils";
-import { SongList } from "./songlist";
 import { Themes, Images } from "../assets/Themes";
-import tracks from "../utils/albumTracksCache.json";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-const AuthButton = ({ authFunction }) => {
+export function HomeScreen() {
+
+const HostButton = ({ }) => {
+  const navigation = useNavigation();
   return (
-    <Pressable onPress={authFunction}>
+    <Pressable onPress={() => {
+      navigation.navigate("Host name", {   });
+    }}>
       <ImageBackground
-        source={styles.spotifyBox}
-        style={styles.spotifyBox}
-        imageStyle={styles.spotifyBox}
+        source={styles.buttonBox}
+        style={styles.buttonBox}
+        imageStyle={styles.buttonBox}
       >
         <View style={styles.button}>
-          <Image style={styles.logo} source={Images.spotify} />
-          <Text style={{ fontSize: 15, color: "white", paddingLeft: 15 }}>
-            CONNECT WITH SPOTIFY
+          <Text style={{ fontSize: 20, color: "white" }}>
+            Host
           </Text>
         </View>
       </ImageBackground>
     </Pressable>
   );
 };
-const List = ({ tracks }) => {
+
+const GuestButton = ({  }) => {
+  const navigation = useNavigation();
   return (
-    <View style={styles.container}>
-      <SongList tracks={tracks} />
-    </View>
+    <Pressable style={{marginTop: 16}} onPress={() => {
+      navigation.navigate("Guest room", {    });
+    }}>
+      <ImageBackground
+        source={styles.buttonBox}
+        style={styles.buttonBox}
+        imageStyle={styles.buttonBox}
+      >
+        <View style={styles.button}>
+          <Text style={{ fontSize: 20, color: "white" }}>
+            Guest
+          </Text>
+        </View>
+      </ImageBackground>
+    </Pressable>
   );
 };
-
-export function HomeScreen() {
-  // Pass in true to useSpotifyAuth to use the album ID (in env.js) instead of top tracks
-  // const { token, tracks, getSpotifyAuth } = useSpotifyAuth(true);
-  const [token, setToken] = useState(false);
-
-  let contentDisplayed;
-  if (token) {
-    contentDisplayed = <List tracks={tracks} />;
-  } else {
-    contentDisplayed = <AuthButton authFunction={() => setToken(true)} />;
-  }
-
-  return (
-    <SafeAreaView style={styles.container}>{contentDisplayed}</SafeAreaView>
-  );
+return (
+  <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+    <Image style={styles.logo} source={Images.telephone} />
+    <View style={{marginTop: 48}}>
+    <HostButton />
+    <GuestButton />
+    </View>
+  </View>
+);
 }
+
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Themes.colors.background,
+    backgroundColor: Themes.colors.white,
     justifyContent: "center",
     alignItems: "center",
     flex: 1,
   },
-  spotifyBox: {
+  buttonBox: {
     backgroundColor: Themes.colors.spotify,
-    width: windowWidth * 0.65,
-    height: windowHeight * 0.06,
+    width: windowWidth * 0.3,
+    height: windowHeight * 0.04,
     borderRadius: 100,
     justifyContent: "center",
     flexDirection: "row",
   },
   button: {
-    flexDirection: "row",
     alignItems: "center",
   },
   list: {
@@ -86,7 +95,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    width: windowWidth * 0.09,
-    height: windowWidth * 0.09,
+    width: windowWidth * 0.9,
+    height: windowWidth * 0.53,
   },
 });
