@@ -10,7 +10,7 @@ import {
     TextInput
   } from "react-native";
   import Constants from "expo-constants";
-  import { useState } from "react";
+  import { useEffect, useState } from "react";
   import { Themes, Images } from "../assets/Themes";
   import { NavigationContainer, useNavigation } from "@react-navigation/native";
   import {supabase} from "../supabase"
@@ -20,14 +20,15 @@ import {
 
   export function RoomCode() {
 
-    // const [hostName, setHostName] = useState("")
+    const [guestName, setName] = useState("")
+    const navigation = useNavigation()
 
     const enterRoom = () => {
       console.log('entering room')
       const channel = supabase.channel('room1', {
         config: {
           presence: {
-            key: 'user2',
+            key: guestName,
           },
         },
       })
@@ -40,12 +41,16 @@ import {
           console.log(status)
         }
       })
+
+      navigation.navigate("Waiting room")
     }
 
     const NextButton = ({  }) => {
+      const navigation = useNavigation();
       return (
-        <Pressable onPress={enterRoom}>
-        <View style={{ alignItems: "center", paddingTop: windowHeight * 0.05, flex: 1 }}>
+        <Pressable onPress={() => {
+         enterRoom()
+        }}>
           <ImageBackground
             source={styles.buttonBox}
             style={styles.buttonBox}
@@ -57,7 +62,6 @@ import {
               </Text>
             </View>
           </ImageBackground>
-        </View>
         </Pressable>
       );
     };
@@ -73,6 +77,15 @@ import {
             // onChangeText={setName}
             // value={hostname}
             placeholder="Room code"
+          />
+          <Text style={{ fontSize: 17, color: "black", alignItems: "center", paddingTop: 20 }}>
+            Enter name
+          </Text>
+          <TextInput
+            style={styles.textinput}
+            onChangeText={setName}
+            value={guestName}
+            placeholder="Guest name"
           />
         <View>
           <NextButton/>

@@ -17,6 +17,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { RoomCode } from "./components/entercode";
 import { HostName } from "./components/hostname";
 import { GuestList } from "./components/guestlistscreen";
+import { MessageScreen } from "./components/messagescreen";
+import { WaitingRoom } from "./components/waitingroom";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -58,7 +60,21 @@ export default function App() {
           component={GuestList} 
           options={{ headerShown: false }}
         />
-
+        <Stack.Screen 
+          name="Waiting room" 
+          component={WaitingRoom} 
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Message screen"
+          component={MessageScreen}
+          options={{
+            headerStyle: {
+              backgroundColor: Themes.colors.white,
+            },
+          headerTintColor: 'gray',
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -14,24 +14,20 @@ import {
   import { useState, useEffect } from "react";
   import { Themes, Images } from "../assets/Themes";
   import { NavigationContainer, useNavigation } from "@react-navigation/native";
-  import {supabase} from "../supabase"
+  import {supabase} from "../supabase";
   
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
 
   const channel = supabase.channel('room1')
 
-  export function GuestList() {
+  export function WaitingRoom() {
     const [guests, setGuests] = useState({})
-
-    console.log('guests', guests)
 
     useEffect(() => {
       console.log("guest list effect")
-      const subscription = channel
+      channel
         .on('presence', { event: '*', schema: '*' }, payload => {
-          console.log('payload', payload)
-          console.log('channel', channel)
           setGuests(channel.presenceState())
           console.log('Change received!', channel.presenceState())
       })
@@ -48,43 +44,17 @@ import {
       );
     };
 
-    const MessageButton = ({  }) => {
-      const navigation = useNavigation();
-      return (
-        <Pressable onPress={() => {
-          navigation.navigate("Message screen", {    });
-        }}> 
-          <View style={{ alignItems: "center" }}>
-            <ImageBackground
-              source={styles.buttonBox}
-              style={styles.buttonBox}
-              imageStyle={styles.buttonBox}
-            >
-              <View style={styles.button}>
-                <Text style={{ fontSize: 20, color: "white" }}>
-                  Write Message
-                </Text>
-              </View>
-            </ImageBackground>
-          </View>
-        </Pressable>
-      );
-    };
-
-  
+ 
     return (
       <View style={styles.container}>
         <View style={styles.titleRow}>
           <Image style={styles.logo} source={Images.telephone} />
-          <Text style={styles.titleText}>Guest List</Text>
+          <Text style={styles.titleText}> Cristian's room</Text>
         </View>
         <FlatList
           data={Object.keys(guests)} // the array of data that the FlatList displays
           renderItem={({item}) => RenderGuest(item)} // function that renders each item
         />
-        <View>
-          <MessageButton />
-        </View>
       </View>
     );
   }

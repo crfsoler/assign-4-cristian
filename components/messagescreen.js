@@ -18,40 +18,12 @@ import {
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
 
-  export function HostName() {
-    const [hostName, setHostName] = useState("")
-    const navigation = useNavigation()
+  export function MessageScreen() {
 
-    const createRoom = () => {
-      console.log('creating room')
-      const channel = supabase.channel('room1', {  
-        config: {
-          presence: {
-            key: hostName,
-            // isHost: true,
-          },
-        },
-      })
-
-      channel.on('presence', { event: 'sync' }, () => {
-        console.log('Online users: ', channel.presenceState())
-      })
-
-      channel.subscribe(async (status) => {
-        if (status === 'SUBSCRIBED') {
-          const status = await channel.track({ online_at: new Date().toISOString() })
-          console.log(status)
-        }
-      })
-
-      navigation.navigate("Guest list")
-
-    }
-
-    const NextButton = ({  }) => {
+    const GameButton = ({  }) => {
       const navigation = useNavigation();
       return (
-        <Pressable onPress={createRoom} >
+        // <Pressable onPress={} >
           <View style={{ alignItems: "center", paddingTop: windowHeight * 0.05, flex: 1 }}>
             <ImageBackground
               source={styles.buttonBox}
@@ -60,12 +32,12 @@ import {
             >
               <View style={styles.button}>
                 <Text style={{ fontSize: 20, color: "white" }}>
-                  Next
+                  Start Game
                 </Text>
               </View>
             </ImageBackground>
           </View>
-        </Pressable>
+        // </Pressable>
       );
     };
     
@@ -73,16 +45,19 @@ import {
       <View style={{ alignItems: "center", paddingTop: windowHeight * 0.1, flex: 1 }}>
           <Image style={styles.logo} source={Images.telephone} />
           <Text style={{ fontSize: 17, color: "black", alignItems: "center", paddingTop: 20 }}>
-            Your name
+            Type message
           </Text>
           <TextInput
             style={styles.textinput}
-            onChangeText={setHostName}
-            value={hostName}
-            placeholder="Host name"
+            // onChangeText={setHostName}
+            // value={hostName}
+            placeholder="Message"
           />
+          <Text style={{ fontSize: 12, color: "black", alignItems: "center", paddingTop: 20 }}>
+            Add a dot (.) whenever you want to break the message into a different group.
+          </Text>
         <View>
-          <NextButton />
+          <GameButton />
         </View>
       </View>
     );
