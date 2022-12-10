@@ -19,19 +19,26 @@ import {
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
 
-  const channel = supabase.channel('room1')
+      const channel = supabase.channel('room1', {  
+        config: {
+          presence: {
+            key: 'Cristian',
+            // isHost: true,
+          },
+        },
+      })
 
   export function WaitingRoom() {
     const [guests, setGuests] = useState({})
 
     useEffect(() => {
-      console.log("guest list effect")
       channel
         .on('presence', { event: '*', schema: '*' }, payload => {
           setGuests(channel.presenceState())
           console.log('Change received!', channel.presenceState())
       })
       .subscribe()
+
     }, [])
 
     const RenderGuest = (item) => {
